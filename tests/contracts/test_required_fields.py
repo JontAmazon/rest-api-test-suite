@@ -5,14 +5,48 @@ from tests.data.todo_payloads import build_todo_payload
 from tests.data.user_payloads import build_user_payload
 from tests.utils.assertions import assert_status
 
+CREATE_USER_REQUIRED_FIELDS = ["name", "email", "gender", "status"]
+CREATE_POST_REQUIRED_FIELDS = ["user_id", "title", "body"]
+CREATE_TODO_REQUIRED_FIELDS = ["user_id", "title", "status"]
+
 
 def _assert_field_error(response, field_name: str) -> None:
     errors = response.json()
     assert any(error.get("field") == field_name for error in errors)
 
 
-@pytest.mark.contract
-@pytest.mark.parametrize("field_name", ["name", "email", "gender", "status"])
+# --- Required fields not missing; expecting 201 ---
+
+def test_create_user_with_all_required_fields(users_client, auth_headers):
+    payload = build_user_payload()
+    for field_name in CREATE_USER_REQUIRED_FIELDS:
+        assert payload.get(field_name) is not None
+    response = users_client.create_user(payload, headers=auth_headers)
+    assert_status(response, 201)
+    users_client.delete_user(response.json()["id"], headers=auth_headers)
+
+
+def test_create_post_with_all_required_fields(posts_client, created_user, auth_headers):
+    payload = build_post_payload(created_user["id"])
+    for field_name in CREATE_POST_REQUIRED_FIELDS:
+        assert payload.get(field_name) is not None
+    response = posts_client.create_post(payload, headers=auth_headers)
+    assert_status(response, 201)
+    posts_client.delete_post(response.json()["id"], headers=auth_headers)
+
+
+def test_create_todo_with_all_required_fields(todos_client, created_user, auth_headers):
+    payload = build_todo_payload(created_user["id"])
+    for field_name in CREATE_TODO_REQUIRED_FIELDS:
+        assert payload.get(field_name) is not None
+    response = todos_client.create_todo(payload, headers=auth_headers)
+    assert_status(response, 201)
+    todos_client.delete_todo(response.json()["id"], headers=auth_headers)
+
+
+# --- Required fields missing; expecting 422---
+
+@pytest.mark.parametrize("field_name", CREATE_USER_REQUIRED_FIELDS)
 def test_required_fields_users(users_client, auth_headers, field_name):
     payload = build_user_payload()
     payload.pop(field_name)
@@ -21,33 +55,20 @@ def test_required_fields_users(users_client, auth_headers, field_name):
     _assert_field_error(response, field_name)
 
 
-@pytest.mark.contract
-@pytest.mark.parametrize("field_name", ["user_id", "title", "body"])
-def test_required_fields_posts(posts_client, users_client, auth_headers, field_name):
-    user_response = users_client.create_user(build_user_payload(), headers=auth_headers)
-    assert_status(user_response, 201)
-    user = user_response.json()
-
-    payload = build_post_payload(user["id"])
+@pytest.mark.parametrize("field_name", CREATE_POST_REQUIRED_FIELDS)
+def test_required_fields_posts(posts_client, created_user, auth_headers, field_name):
+    payload = build_post_payload(created_user["id"])
     payload.pop(field_name)
     response = posts_client.create_post(payload, headers=auth_headers)
     assert_status(response, 422)
     _assert_field_error(response, field_name)
 
-    users_client.delete_user(user["id"], headers=auth_headers)
 
-
-@pytest.mark.contract
-@pytest.mark.parametrize("field_name", ["user_id", "title", "status"])
-def test_required_fields_todos(todos_client, users_client, auth_headers, field_name):
-    user_response = users_client.create_user(build_user_payload(), headers=auth_headers)
-    assert_status(user_response, 201)
-    user = user_response.json()
-
-    payload = build_todo_payload(user["id"])
+@pytest.mark.parametrize("field_name", CREATE_TODO_REQUIRED_FIELDS)
+def test_required_fields_todos(todos_client, created_user, auth_headers, field_name):
+    payload = build_todo_payload(created_user["id"])
     payload.pop(field_name)
     response = todos_client.create_todo(payload, headers=auth_headers)
     assert_status(response, 422)
     _assert_field_error(response, field_name)
 
-    users_client.delete_user(user["id"], headers=auth_headers)

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import warnings
+from venv import logger
 
 import pytest
 
@@ -21,6 +21,6 @@ def delete_todo_ignore_errors(todos_client, todo_id: int, headers: dict[str, str
     try:
         response = todos_client.delete_todo(todo_id, headers=headers)
         if response.status_code != 204:
-            warnings.warn(f"Cleanup - deleting todo {todo_id} returned unexpected status {response.status_code}", stacklevel=2)
+            logger.warning(f"Cleanup - deleting todo {todo_id} returned unexpected status {response.status_code}")
     except Exception as exc:
-        warnings.warn(f"Cleanup - deleting todo {todo_id} failed: {exc}", stacklevel=2)
+        logger.warning(f"Cleanup - deleting todo {todo_id} returned unexpected status {response.status_code}")

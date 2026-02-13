@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import warnings
+from venv import logger
 
 import pytest
 
@@ -21,6 +21,6 @@ def delete_post_ignore_errors(posts_client, post_id: int, headers: dict[str, str
     try:
         response = posts_client.delete_post(post_id, headers=headers)
         if response.status_code != 204:
-            warnings.warn(f"Cleanup - deleting post {post_id} returned unexpected status {response.status_code}", stacklevel=2)
+            logger.warning(f"Cleanup - deleting post {post_id} returned unexpected status {response.status_code}: {response.text}")
     except Exception as exc:
-        warnings.warn(f"Cleanup - deleting post {post_id} failed: {exc}", stacklevel=2)
+        logger.warning(f"Cleanup - deleting post {post_id} returned unexpected status {response.status_code}: {response.text}")

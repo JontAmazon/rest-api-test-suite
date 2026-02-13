@@ -29,17 +29,13 @@ def test_auth_on_create_user(users_client, auth_headers, garbage_token_headers, 
 
 @pytest.mark.auth
 @pytest.mark.parametrize("token_case", ["missing", "garbage", "valid"])
-def test_auth_on_update_user(users_client, auth_headers, garbage_token_headers, missing_token_headers, token_case):
-    user_response = users_client.create_user(build_user_payload(), headers=auth_headers)
-    assert_status(user_response, 201)
-    user = user_response.json()
-
+def test_auth_on_update_user(created_user, users_client, auth_headers, garbage_token_headers, missing_token_headers, token_case):
     headers = {
         "missing": missing_token_headers,
         "garbage": garbage_token_headers,
         "valid": auth_headers,
     }[token_case]
-    response = users_client.update_user(user["id"], {"name": "Auth Update"}, headers=headers)
+    response = users_client.update_user(created_user["id"], {"name": "Auth Update"}, headers=headers)
     if token_case == "missing":
         expected = 404
     elif token_case == "garbage":
@@ -47,8 +43,6 @@ def test_auth_on_update_user(users_client, auth_headers, garbage_token_headers, 
     else:
         expected = 200
     assert_status(response, expected)
-
-    users_client.delete_user(user["id"], headers=auth_headers)
 
 
 @pytest.mark.auth
@@ -72,48 +66,35 @@ def test_auth_on_delete_user(users_client, auth_headers, garbage_token_headers, 
         expected = 204
     assert_status(response, expected)
 
-    users_client.delete_user(user["id"], headers=auth_headers)
-
 
 @pytest.mark.auth
 @pytest.mark.parametrize("token_case", ["missing", "garbage", "valid"])
-def test_auth_on_create_post(posts_client, users_client, auth_headers, garbage_token_headers, missing_token_headers, token_case):
-    user_response = users_client.create_user(build_user_payload(), headers=auth_headers)
-    assert_status(user_response, 201)
-    user = user_response.json()
-
+def test_auth_on_create_post(posts_client, created_user, auth_headers, garbage_token_headers, missing_token_headers, token_case):
     headers = {
         "missing": missing_token_headers,
         "garbage": garbage_token_headers,
         "valid": auth_headers,
     }[token_case]
-    response = posts_client.create_post(build_post_payload(user["id"]), headers=headers)
+    response = posts_client.create_post(build_post_payload(created_user["id"]), headers=headers)
     expected = _expected_status(token_case)
     assert_status(response, expected)
 
     if token_case == "valid":
         posts_client.delete_post(response.json()["id"], headers=auth_headers)
 
-    users_client.delete_user(user["id"], headers=auth_headers)
-
 
 @pytest.mark.auth
 @pytest.mark.parametrize("token_case", ["missing", "garbage", "valid"])
-def test_auth_on_create_todo(todos_client, users_client, auth_headers, garbage_token_headers, missing_token_headers, token_case):
-    user_response = users_client.create_user(build_user_payload(), headers=auth_headers)
-    assert_status(user_response, 201)
-    user = user_response.json()
-
+def test_auth_on_create_todo(todos_client, created_user, auth_headers, garbage_token_headers, missing_token_headers, token_case):
     headers = {
         "missing": missing_token_headers,
         "garbage": garbage_token_headers,
         "valid": auth_headers,
     }[token_case]
-    response = todos_client.create_todo(build_todo_payload(user["id"]), headers=headers)
+    response = todos_client.create_todo(build_todo_payload(created_user["id"]), headers=headers)
     expected = _expected_status(token_case)
     assert_status(response, expected)
 
     if token_case == "valid":
         todos_client.delete_todo(response.json()["id"], headers=auth_headers)
 
-    users_client.delete_user(user["id"], headers=auth_headers)

@@ -3,7 +3,6 @@ import pytest
 from tests.utils.assertions import assert_json_content_type, assert_pagination_headers, assert_status
 
 
-@pytest.mark.contract
 @pytest.mark.parametrize(
     "client_fixture,method",
     [
