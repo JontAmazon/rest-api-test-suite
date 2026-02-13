@@ -1,4 +1,8 @@
 my-notes/
+my-todos/
+my-evev/
+
+tests/tmp_test_created_post_fixture.py
 
 reports/
 .env
