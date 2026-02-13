@@ -7,18 +7,21 @@ GoRest is a publicly available API designed specifically for practicing and demo
 Endpoints: `/users`, `/posts`, and `/todos`.
 
 ## Test Coverage
-- **CRUD operations:** happy-path and failure-path tests for CRUD flows.
-- **Filtering/searching:** exact/partial matches, combined filters, sorting, and pagination boundaries.
-   - TODO: what exactly do we test?
+- **CRUD operations:** positive and negative tests for CRUD flows.
+- **Filtering/searching:** filtering posts by `user_id`, filtering todos by `user_id + due_on`, and searching posts by keyword.
 - **Auth behavior:** authorized vs unauthorized access, and token validation.
-- **Idempotency:** Duplicate user creation and deletion requests are handled gracefully.
-- **Input validation:** required-field checks, enum/value validation (e.g., gender/status), and expected 422 error responses for invalid payloads.
-
-- **JSON schema validation:** response bodies are validated for `POST /users` (`201`) and `GET /todos` (`200`), including required fields and base data types for user objects and todo-list items.
-
-- **API contract checks:** response headers (Content-Type, pagination headers), required-field error behavior (422 + field errors), and unknown-field handling are verified to catch breaking changes.
-
+- **Idempotency:** duplicate user creation and deletion requests are handled gracefully.
 - **Cleanup behavior:** deleting a user triggers cleanup of posts and todos.
+- **API contract checks:** verifies response headers (e.g. Content-Type, pagination), required fields, and API behavior for unknown fields, and invalid input values.
+- **JSON schema validation:** response bodies for `POST /users (201)` and `GET /todos (200)` are validated against JSON schemas, asserting required fields and data types while allowing non-breaking additions (optional parameters).
+
+
+## Features
+- fixtures for creating users, posts and todos.
+   - setup and cleanup separated from tests.
+- parametrization for e.g. required fields and auth tests.
+- logging of requests.
+
 
 ## Project structure
 ```
@@ -44,14 +47,15 @@ gorest-api-tests/
     ├── test_idempotency.py
     ├── test_input_validation.py
     └── contracts/
-    └──---
-    └──---
-    └──---
-    └──---    
+        ├── test_input_validation.py
+        ├── test_required_fields.py
+        ├── test_response_headers.py
+        ├── test_schema_validation.py
+        └── test_unknown_fields.py
 ```
 
 ## Setup
-(Recommended: Create a Python virtual environment (venv)).
+(Recommended: Create a Python virtual environment - venv).
 
 1. Install dependencies:
    ```bash
