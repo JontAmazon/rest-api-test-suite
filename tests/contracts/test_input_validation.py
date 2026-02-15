@@ -1,5 +1,5 @@
-from tests.data.todo_payloads import build_todo_payload
-from tests.data.user_payloads import build_user_payload
+from tests.payloads.todo_payloads import build_todo_payload
+from tests.payloads.user_payloads import build_user_payload
 from tests.utils.assertions import assert_status
 
 
@@ -13,3 +13,4 @@ def test_todo_status_validation(todos_client, created_user, auth_headers):
     payload = build_todo_payload(created_user["id"], status="invalid")
     response = todos_client.create_todo(payload, headers=auth_headers)
     assert_status(response, 422)
+

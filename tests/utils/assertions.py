@@ -30,3 +30,4 @@ def assert_pagination_headers(response: requests.Response) -> None:
 def assert_has_keys(payload: Dict[str, Any], keys: list[str]) -> None:
     for key in keys:
         assert key in payload
+

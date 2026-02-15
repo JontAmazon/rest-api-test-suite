@@ -17,3 +17,4 @@ def test_response_headers_for_main_endpoints(request, client_fixture, method):
     assert_status(response, 200)
     assert_json_content_type(response)
     assert_pagination_headers(response)
+

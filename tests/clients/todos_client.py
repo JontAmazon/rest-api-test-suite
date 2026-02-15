@@ -20,3 +20,4 @@ class TodosClient(BaseClient):
 
     def delete_todo(self, todo_id: int, headers: Optional[Dict[str, str]] = None) -> requests.Response:
         return self.delete(f"todos/{todo_id}", headers=headers)
+

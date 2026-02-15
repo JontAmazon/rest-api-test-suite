@@ -1,4 +1,4 @@
-from tests.data.user_payloads import build_user_payload
+from tests.payloads.user_payloads import build_user_payload
 from tests.utils.assertions import assert_status
 
 
@@ -22,3 +22,4 @@ def test_create_user_email_already_exists(users_client, auth_headers):
     assert_status(duplicate_response, 422)
 
     users_client.delete_user(user["id"], headers=auth_headers)
+

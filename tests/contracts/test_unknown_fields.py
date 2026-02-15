@@ -1,7 +1,7 @@
 import uuid
 
-from tests.data.todo_payloads import build_todo_payload
-from tests.data.user_payloads import build_user_payload
+from tests.payloads.todo_payloads import build_todo_payload
+from tests.payloads.user_payloads import build_user_payload
 from tests.utils.assertions import assert_status
 
 
@@ -23,4 +23,5 @@ def test_unknown_fields_ignored_on_user_todos(todos_client, created_user, auth_h
     assert "unexpected" not in response.json()
 
     todos_client.delete_todo(response.json()["id"], headers=auth_headers)
+
 

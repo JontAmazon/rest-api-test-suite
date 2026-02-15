@@ -18,3 +18,4 @@ def load_schema(filename: str) -> dict[str, Any]:
 def validate_schema(payload: Any, schema_name: str) -> None:
     schema = load_schema(schema_name)
     validate(instance=payload, schema=schema)
+

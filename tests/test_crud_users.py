@@ -1,6 +1,6 @@
 import pytest
 
-from tests.data.user_payloads import build_user_payload
+from tests.payloads.user_payloads import build_user_payload
 from tests.utils.assertions import assert_has_keys, assert_json_content_type, assert_status
 from tests.utils.schema_validation import validate_schema
 
@@ -35,3 +35,4 @@ def test_create_read_update_delete_user(users_client, auth_headers):
 
     get_deleted = users_client.get_user(user["id"], headers=auth_headers)
     assert_status(get_deleted, 404)
+

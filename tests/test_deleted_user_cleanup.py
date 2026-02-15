@@ -1,6 +1,6 @@
-from tests.data.post_payloads import build_post_payload
-from tests.data.todo_payloads import build_todo_payload
-from tests.data.user_payloads import build_user_payload
+from tests.payloads.post_payloads import build_post_payload
+from tests.payloads.todo_payloads import build_todo_payload
+from tests.payloads.user_payloads import build_user_payload
 from tests.utils.assertions import assert_status
 
 
@@ -21,3 +21,4 @@ def test_deleted_user_cleanup(created_user, created_post, created_todo,users_cli
 
     create_todo = todos_client.create_todo(build_todo_payload(created_user["id"]), headers=auth_headers)
     assert_status(create_todo, 422)
+

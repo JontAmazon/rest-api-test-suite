@@ -20,3 +20,4 @@ class PostsClient(BaseClient):
 
     def delete_post(self, post_id: int, headers: Optional[Dict[str, str]] = None) -> requests.Response:
         return self.delete(f"posts/{post_id}", headers=headers)
+

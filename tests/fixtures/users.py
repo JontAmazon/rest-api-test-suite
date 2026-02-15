@@ -4,7 +4,7 @@ import pytest
 
 from schedule import logger
 
-from tests.data.user_payloads import build_user_payload
+from tests.payloads.user_payloads import build_user_payload
 
 
 @pytest.fixture
@@ -24,3 +24,4 @@ def delete_user_ignore_errors(users_client, user_id: int, headers: dict[str, str
             logger.warning(f"Cleanup - deleting user {user_id} returned unexpected status {response.status_code}")
     except Exception as exc:
         logger.warning(f"Cleanup - deleting user {user_id} returned unexpected status {response.status_code}")
+

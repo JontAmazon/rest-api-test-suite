@@ -1,7 +1,7 @@
 import datetime as dt
 
-from tests.data.post_payloads import build_keyword_body, build_post_payload
-from tests.data.todo_payloads import build_todo_payload
+from tests.payloads.post_payloads import build_keyword_body, build_post_payload
+from tests.payloads.todo_payloads import build_todo_payload
 from tests.utils.assertions import assert_status
 
 
@@ -39,3 +39,4 @@ def test_search_posts_by_body_keyword(posts_client, created_user, auth_headers, 
 
     for post in posts:
         posts_client.delete_post(post["id"], headers=auth_headers)
+

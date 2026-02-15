@@ -13,3 +13,4 @@ def build_post_payload(user_id: int, title: str | None = None, body: str | None 
 
 def build_keyword_body(keyword: str) -> str:
     return f"This is a test body with keyword: {keyword}."
+

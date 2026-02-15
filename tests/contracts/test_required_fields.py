@@ -1,8 +1,8 @@
 import pytest
 
-from tests.data.post_payloads import build_post_payload
-from tests.data.todo_payloads import build_todo_payload
-from tests.data.user_payloads import build_user_payload
+from tests.payloads.post_payloads import build_post_payload
+from tests.payloads.todo_payloads import build_todo_payload
+from tests.payloads.user_payloads import build_user_payload
 from tests.utils.assertions import assert_status
 
 CREATE_USER_REQUIRED_FIELDS = ["name", "email", "gender", "status"]
@@ -71,4 +71,5 @@ def test_required_fields_todos(todos_client, created_user, auth_headers, field_n
     response = todos_client.create_todo(payload, headers=auth_headers)
     assert_status(response, 422)
     _assert_field_error(response, field_name)
+
 

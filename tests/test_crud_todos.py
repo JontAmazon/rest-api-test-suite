@@ -1,6 +1,6 @@
 import pytest
 
-from tests.data.todo_payloads import build_todo_payload
+from tests.payloads.todo_payloads import build_todo_payload
 from tests.utils.assertions import assert_json_content_type, assert_status
 
 
@@ -39,3 +39,4 @@ def test_create_read_update_delete_todo(todos_client, users_client, auth_headers
 
     get_deleted = todos_client.get_todo(todo["id"], headers=auth_headers)
     assert_status(get_deleted, 404)
+

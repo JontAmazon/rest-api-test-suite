@@ -195,3 +195,4 @@ class BaseClient:
             self._redact_headers(dict(response.headers)),
             self._response_body_for_log(response),
         )
+

@@ -35,7 +35,7 @@ gorest-api-tests/
     ├── config.py
     ├── clients/
     ├── fixtures/
-    ├── data/
+    ├── payloads/
     ├── schemas/
     ├── utils/
     ├── test_crud_users.py
