@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-from venv import logger
+import logging
 
 import pytest
 
 from tests.payloads.post_payloads import build_post_payload
+
+logger = logging.getLogger(__name__)
 
 
 @pytest.fixture
@@ -21,7 +23,7 @@ def delete_post_ignore_errors(posts_client, post_id: int, headers: dict[str, str
     try:
         response = posts_client.delete_post(post_id, headers=headers)
         if response.status_code != 204:
-            logger.warning(f"Cleanup - deleting post {post_id} returned unexpected status {response.status_code}: {response.text}")
-    except Exception as exc:
-        logger.warning(f"Cleanup - deleting post {post_id} returned unexpected status {response.status_code}: {response.text}")
+            logger.warning("Cleanup - deleting post %s returned unexpected status %s", post_id, response.status_code)
+    except Exception:
+        logger.exception("Cleanup - deleting post %s failed", post_id)
 

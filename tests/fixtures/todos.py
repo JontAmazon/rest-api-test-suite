@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-from venv import logger
+import logging
 
 import pytest
 
 from tests.payloads.todo_payloads import build_todo_payload
+
+logger = logging.getLogger(__name__)
 
 
 @pytest.fixture
@@ -21,7 +23,7 @@ def delete_todo_ignore_errors(todos_client, todo_id: int, headers: dict[str, str
     try:
         response = todos_client.delete_todo(todo_id, headers=headers)
         if response.status_code != 204:
-            logger.warning(f"Cleanup - deleting todo {todo_id} returned unexpected status {response.status_code}")
-    except Exception as exc:
-        logger.warning(f"Cleanup - deleting todo {todo_id} returned unexpected status {response.status_code}")
+            logger.warning("Cleanup - deleting todo %s returned unexpected status %s", todo_id, response.status_code)
+    except Exception:
+        logger.exception("Cleanup - deleting todo %s failed", todo_id)
 

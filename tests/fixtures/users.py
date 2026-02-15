@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import logging
+
 import pytest
 
-from schedule import logger
-
 from tests.payloads.user_payloads import build_user_payload
+
+logger = logging.getLogger(__name__)
 
 
 @pytest.fixture
@@ -21,7 +23,7 @@ def delete_user_ignore_errors(users_client, user_id: int, headers: dict[str, str
     try:
         response = users_client.delete_user(user_id, headers=headers)
         if response.status_code != 204:
-            logger.warning(f"Cleanup - deleting user {user_id} returned unexpected status {response.status_code}")
-    except Exception as exc:
-        logger.warning(f"Cleanup - deleting user {user_id} returned unexpected status {response.status_code}")
+            logger.warning("Cleanup - deleting user %s returned unexpected status %s", user_id, response.status_code)
+    except Exception:
+        logger.exception("Cleanup - deleting user %s failed", user_id)
 
