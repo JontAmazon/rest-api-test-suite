@@ -2,7 +2,7 @@
 A pytest + requests-based API test suite.
 
 ## Application under test
-GoRest is a publicly available API designed specifically for practicing and demonstrating REST API testing and automation. **Application features** include registering users, login, and each user can create posts and todos.
+GoRest is a publicly available API designed specifically for practicing and demonstrating REST API testing and automation. **Application features** include registering users, login, and each user can CRUD posts and todos.
 
 Endpoints: `/users`, `/posts`, and `/todos`.
 
@@ -11,8 +11,9 @@ Endpoints: `/users`, `/posts`, and `/todos`.
 - **Filtering/searching:** filtering posts by `user_id`, filtering todos by `user_id + due_on`, and searching posts by keyword.
 - **Auth behavior:** authorized vs unauthorized access, and token validation.
 - **Idempotency:** duplicate user creation and deletion requests are handled gracefully.
+- **Input validation:**: verify invalid enum-like values (e.g., gender, status) are rejected with 422.
 - **Cleanup behavior:** deleting a user triggers cleanup of posts and todos.
-- **API contract checks:** verifies response headers (e.g. Content-Type, pagination), required fields, and API behavior for unknown fields, and invalid input values.
+- **API contract checks:** verifies response headers (e.g. Content-Type, pagination), required fields, and API behavior for unknown fields.
 - **JSON schema validation:** response bodies for `POST /users (201)` and `GET /todos (200)` are validated against JSON schemas, asserting required fields and data types while allowing non-breaking additions (optional parameters).
 
 
@@ -47,7 +48,6 @@ gorest-api-tests/
     ├── test_idempotency.py
     ├── test_input_validation.py
     └── contracts/
-        ├── test_input_validation.py
         ├── test_required_fields.py
         ├── test_response_headers.py
         ├── test_schema_validation.py
