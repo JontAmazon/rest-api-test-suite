@@ -4,7 +4,7 @@ from tests.payloads.user_payloads import build_user_payload
 from tests.utils.assertions import assert_status
 
 
-def test_deleted_user_cleanup(created_user, created_post, created_todo,users_client, posts_client, todos_client, auth_headers):
+def test_deleted_user_cleanup(created_user, created_post, created_todo, users_client, posts_client, todos_client, auth_headers):
     # Delete the user. This should also delete the associated post and todo.
     delete_response = users_client.delete_user(created_user["id"], headers=auth_headers)
     assert_status(delete_response, 204)

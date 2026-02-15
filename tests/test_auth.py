@@ -53,7 +53,7 @@ def test_auth_on_delete_user(created_user, users_client, auth_headers, garbage_t
 
 @pytest.mark.auth
 @pytest.mark.parametrize("token_case", ["missing", "garbage", "valid"])
-def test_auth_on_create_post(posts_client, created_user, auth_headers, garbage_token_headers, missing_token_headers, token_case):
+def test_auth_on_create_post(created_user, posts_client, auth_headers, garbage_token_headers, missing_token_headers, token_case):
     headers = {"missing": missing_token_headers, "garbage": garbage_token_headers, "valid": auth_headers}[token_case]
     response = posts_client.create_post(build_post_payload(created_user["id"]), headers=headers)
     expected = _expected_status(token_case)
@@ -65,7 +65,7 @@ def test_auth_on_create_post(posts_client, created_user, auth_headers, garbage_t
 
 @pytest.mark.auth
 @pytest.mark.parametrize("token_case", ["missing", "garbage", "valid"])
-def test_auth_on_create_todo(todos_client, created_user, auth_headers, garbage_token_headers, missing_token_headers, token_case):
+def test_auth_on_create_todo(created_user, todos_client, auth_headers, garbage_token_headers, missing_token_headers, token_case):
     headers = {"missing": missing_token_headers, "garbage": garbage_token_headers, "valid": auth_headers}[token_case]
     response = todos_client.create_todo(build_todo_payload(created_user["id"]), headers=headers)
     expected = _expected_status(token_case)

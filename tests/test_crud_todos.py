@@ -4,7 +4,7 @@ from tests.payloads.todo_payloads import build_todo_payload
 from tests.utils.assertions import assert_json_content_type, assert_status
 
 
-def test_create_read_update_delete_todo(todos_client, users_client, auth_headers, created_user):
+def test_create_read_update_delete_todo(created_user, todos_client, users_client, auth_headers):
     # create todo
     payload = build_todo_payload(created_user["id"])
     create_response = todos_client.create_todo(payload, headers=auth_headers)

@@ -26,7 +26,7 @@ def test_create_user_with_all_required_fields(users_client, auth_headers):
     users_client.delete_user(response.json()["id"], headers=auth_headers)
 
 
-def test_create_post_with_all_required_fields(posts_client, created_user, auth_headers):
+def test_create_post_with_all_required_fields(created_user, posts_client, auth_headers):
     payload = build_post_payload(created_user["id"])
     for field_name in CREATE_POST_REQUIRED_FIELDS:
         assert payload.get(field_name) is not None
@@ -35,7 +35,7 @@ def test_create_post_with_all_required_fields(posts_client, created_user, auth_h
     posts_client.delete_post(response.json()["id"], headers=auth_headers)
 
 
-def test_create_todo_with_all_required_fields(todos_client, created_user, auth_headers):
+def test_create_todo_with_all_required_fields(created_user, todos_client, auth_headers):
     payload = build_todo_payload(created_user["id"])
     for field_name in CREATE_TODO_REQUIRED_FIELDS:
         assert payload.get(field_name) is not None
@@ -56,7 +56,7 @@ def test_required_fields_users(users_client, auth_headers, field_name):
 
 
 @pytest.mark.parametrize("field_name", CREATE_POST_REQUIRED_FIELDS)
-def test_required_fields_posts(posts_client, created_user, auth_headers, field_name):
+def test_required_fields_posts(created_user, posts_client, auth_headers, field_name):
     payload = build_post_payload(created_user["id"])
     payload.pop(field_name)
     response = posts_client.create_post(payload, headers=auth_headers)
@@ -65,7 +65,7 @@ def test_required_fields_posts(posts_client, created_user, auth_headers, field_n
 
 
 @pytest.mark.parametrize("field_name", CREATE_TODO_REQUIRED_FIELDS)
-def test_required_fields_todos(todos_client, created_user, auth_headers, field_name):
+def test_required_fields_todos(created_user, todos_client, auth_headers, field_name):
     payload = build_todo_payload(created_user["id"])
     payload.pop(field_name)
     response = todos_client.create_todo(payload, headers=auth_headers)

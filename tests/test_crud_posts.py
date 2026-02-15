@@ -4,7 +4,7 @@ from tests.payloads.post_payloads import build_post_payload
 from tests.utils.assertions import assert_json_content_type, assert_status
 
 
-def test_create_read_update_delete_post(posts_client, users_client, auth_headers, created_user):
+def test_create_read_update_delete_post(created_user, posts_client, users_client, auth_headers):
     # create post
     payload = build_post_payload(created_user["id"])
     create_response = posts_client.create_post(payload, headers=auth_headers)

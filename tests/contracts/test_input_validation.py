@@ -9,7 +9,7 @@ def test_user_gender_validation(users_client, auth_headers):
     assert_status(response, 422)
 
 
-def test_todo_status_validation(todos_client, created_user, auth_headers):
+def test_todo_status_validation(created_user, todos_client, auth_headers):
     payload = build_todo_payload(created_user["id"], status="invalid")
     response = todos_client.create_todo(payload, headers=auth_headers)
     assert_status(response, 422)

@@ -11,7 +11,7 @@ def test_filter_posts_by_user(created_post, created_user, posts_client, auth_hea
     assert any(item["id"] == created_post["id"] for item in list_by_user.json())
 
 
-def test_filter_todos_by_user_and_due_on(todos_client, created_user, auth_headers):
+def test_filter_todos_by_user_and_due_on(created_user, todos_client, auth_headers):
     due_on_value = (dt.datetime.now(dt.UTC) + dt.timedelta(days=3)).strftime("%Y-%m-%dT%H:%M:%S.000+05:30")
     todo_payload = build_todo_payload(created_user["id"], due_on=due_on_value)
     todo_response = todos_client.create_todo(todo_payload, headers=auth_headers)
@@ -23,7 +23,7 @@ def test_filter_todos_by_user_and_due_on(todos_client, created_user, auth_header
     assert any(item["id"] == todo["id"] for item in list_by_filter.json())
 
 
-def test_search_posts_by_body_keyword(posts_client, created_user, auth_headers, random_keyword):
+def test_search_posts_by_body_keyword(created_user, posts_client, auth_headers, random_keyword):
     posts = []
     body_with_keyword = build_keyword_body(random_keyword)
     for body in [body_with_keyword, "this body should not match"]:

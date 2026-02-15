@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 @pytest.fixture
-def created_post(posts_client, auth_headers, created_user):
+def created_post(created_user, posts_client, auth_headers):
     payload = build_post_payload(created_user["id"])
     response = posts_client.create_post(payload, headers=auth_headers)
     assert response.status_code == 201, response.text

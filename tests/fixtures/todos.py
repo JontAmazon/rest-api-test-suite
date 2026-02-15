@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 @pytest.fixture
-def created_todo(todos_client, auth_headers, created_user):
+def created_todo(created_user, todos_client, auth_headers):
     payload = build_todo_payload(created_user["id"])
     response = todos_client.create_todo(payload, headers=auth_headers)
     assert response.status_code == 201, response.text

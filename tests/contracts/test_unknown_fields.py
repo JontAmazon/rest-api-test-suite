@@ -15,7 +15,7 @@ def test_unknown_fields_ignored_on_users(users_client, auth_headers):
     users_client.delete_user(response.json()["id"], headers=auth_headers)
 
 
-def test_unknown_fields_ignored_on_user_todos(todos_client, created_user, auth_headers):
+def test_unknown_fields_ignored_on_user_todos(created_user, todos_client, auth_headers):
     payload = build_todo_payload(created_user["id"])
     payload["unexpected"] = "should-not-return"
     response = todos_client.create_todo(payload, headers=auth_headers)
